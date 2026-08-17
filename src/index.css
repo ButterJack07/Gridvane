@@ -1,0 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@600;700;900&display=swap');
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: #e8e6db; color: #183439; font-family: Manrope, "Microsoft YaHei", sans-serif; }
+button { font: inherit; cursor: pointer; }
