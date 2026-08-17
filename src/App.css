@@ -2,16 +2,18 @@
 .app-shell { min-height:100vh; padding:0 3vw 48px; background:radial-gradient(circle at 82% 5%,#d1e7db 0,transparent 26%),radial-gradient(circle at 9% 54%,#f0d7b7 0,transparent 25%),#e8e6db; }
 .rotate-device { display:none; }
 @media (max-width:900px) and (orientation:portrait) { .app-shell:not(.force-landscape)>*:not(.rotate-device) { display:none !important; }.app-shell:not(.force-landscape) { min-height:100dvh; padding:0; display:grid; place-items:center; background:radial-gradient(circle at 50% 20%,#f1d4a8,transparent 35%),#d5e0d5; }.rotate-device { display:grid; place-items:center; width:100%; height:100dvh; padding:24px; text-align:center; }.rotate-device>div { display:grid; gap:11px; place-items:center; max-width:310px; color:#255e59; }.rotate-device i { display:grid; place-items:center; width:62px; height:62px; border:1px solid #8eaea0; border-radius:50%; background:#f9f3e4; font:34px "DM Mono"; animation:rotate-hint 1.7s ease-in-out infinite; }.rotate-device b { font:800 20px "Noto Serif SC"; }.rotate-device span { color:#60766e; font-size:12px; line-height:1.55; }.rotate-device button { margin-top:7px; padding:10px 20px; border:0; background:#28746d; color:#fff; font-weight:700; box-shadow:4px 5px 0 rgba(31,80,70,.18); }@keyframes rotate-hint { 0%,100% { transform:rotate(0); } 50% { transform:rotate(90deg); } }
-  .app-shell.force-landscape { position:fixed; left:0; top:0; width:100vh; height:100vw; min-height:0; overflow:hidden; padding:6px 2vh; transform:rotate(90deg) translateY(-100%); transform-origin:top left; }
+  .rotate-device .force-rotate { margin-top:0; background:#c86541; box-shadow:4px 5px 0 rgba(133,67,37,.18); }
+  .app-shell.force-landscape { position:fixed; left:100vw; top:0; width:100vh; height:100vw; min-height:0; overflow:hidden; padding:5px 1.5vh; transform:rotate(90deg); transform-origin:top left; }
   .app-shell.force-landscape .rotate-device { display:none; }
-  .app-shell.force-landscape .game-layout { display:grid; grid-template-columns:25vh minmax(300px,1fr) 23vh; gap:8px; align-items:start; width:96vh; max-width:none; }
-  .app-shell.force-landscape .board { width:min(64vw,52vh); height:min(64vw,52vh); margin:auto; }
-  .app-shell.force-landscape .player-panel { width:25vh; max-height:94vw; overflow:hidden; }
-  .app-shell.force-landscape .player-panel .guide-page { height:calc(94vw - 190px); min-height:0; }
-  .app-shell.force-landscape .hand-area { position:absolute; right:2vh; top:6px; width:23vh; max-width:220px; margin:0; padding:0; border:0; }
+  .app-shell.force-landscape .game-layout { display:grid; grid-template-columns:24% minmax(0,52%) 22%; justify-content:center; gap:1%; align-items:start; width:97vh; max-width:none; margin:0 auto; }
+  .app-shell.force-landscape .board-wrap { width:100%; min-width:0; }.app-shell.force-landscape .board { width:min(78vw,51vh); height:min(78vw,51vh); max-width:100%; margin:auto; }
+  .app-shell.force-landscape .player-panel { width:100%; max-height:96vw; overflow:hidden; }
+  .app-shell.force-landscape .player-panel .guide-page { height:calc(96vw - 170px); min-height:210px; }
+  .app-shell.force-landscape .hand-area { position:absolute; right:1.5vh; top:5px; width:21.3vh; max-width:none; margin:0; padding:0; border:0; }
   .app-shell.force-landscape .cards { display:flex; flex-direction:column; gap:0; margin-top:5px; }
   .app-shell.force-landscape .card { width:100%; height:52px; min-height:52px; padding:6px 8px; }
-  .app-shell.force-landscape .card:hover,.app-shell.force-landscape .card:focus-within { height:145px; min-height:145px; }
+  .app-shell.force-landscape .card:hover,.app-shell.force-landscape .card:focus-within { height:132px; min-height:132px; }
+  .app-shell.force-landscape .hand-head h2 { font-size:11px; }.app-shell.force-landscape .turn-actions .skill-button,.app-shell.force-landscape .turn-actions .end-turn { padding:5px 2px; font-size:7px; }.app-shell.force-landscape .card h3 { font-size:9px; }.app-shell.force-landscape .card p { font-size:7px; }.app-shell.force-landscape .room strong { font-size:8px; }.app-shell.force-landscape .room small { font-size:6px; }.app-shell.force-landscape .room i { font-size:14px; }.app-shell.force-landscape .board-wrap::before { margin-bottom:2px; font-size:8px; }
 }
 @media (max-width:900px) and (orientation:landscape) { .app-shell { min-height:100dvh; height:100dvh; overflow:hidden; padding:6px 2vw; }.game-layout { grid-template-columns:25vw minmax(330px,1fr) 23vw; gap:10px; align-items:start; }.board { width:min(64vh,52vw); height:min(64vh,52vw); margin:auto; }.player-panel { max-height:94dvh; overflow:hidden; }.player-panel .guide-page { height:calc(94dvh - 190px); min-height:0; }.field-guide { min-height:0; }.hand-area { position:absolute; right:2vw; top:6px; width:23vw; max-width:220px; margin:0; padding:0; border:0; }.hand-head h2 { font-size:12px; }.turn-actions .skill-button,.turn-actions .end-turn { padding:6px 3px; font-size:8px; }.cards { margin-top:5px; }.card { width:100%; height:52px; min-height:52px; padding:6px 8px; }.card:hover,.card:focus-within { height:145px; min-height:145px; }.card h3 { font-size:10px; }.card p { font-size:8px; }.board-wrap::before { font-size:9px; margin-bottom:3px; }.room strong { font-size:9px; }.room small { font-size:7px; }.room i { font-size:15px; }.dash-arrow { width:26px; height:26px; font-size:15px; } }
 header { height:83px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #aebeb7; max-width:1480px; margin:auto; }
@@ -142,6 +144,17 @@ header { height:83px; display:flex; align-items:center; justify-content:space-be
   .card h3 { font-size:11px; }.card p { font-size:9px; }.card button { font-size:8px; }
 }
 
+/* Final readability pass across desktop and natural landscape layouts. */
+@media (min-width:901px), (max-width:900px) and (orientation:landscape) {
+  .panel-label { font-size:12px; }.status-head button { font-size:11px; }
+  .turn-status b { font-size:13px; }.turn-status span,.turn-status i { font-size:10px; }
+  .duel-stats .player-name b { font-size:12px; }.duel-stats .player-name small { font-size:9px; }.duel-stats .meters span { font-size:10px; }.duel-stats .meters b { font-size:12px; }.duel-stats .buffs { font-size:9px; }
+  .objective,.objective b { font-size:12px; }
+  .guide-page h2 { font-size:23px; }.guide-note,.guide-section button,.guide-section b { font-size:11px; }.detail-rule p { font-size:11px; }
+  .room strong { font-size:14px; }.room small { font-size:11px; }.board-wrap::before { font-size:13px; }
+  .hand-head h2 { font-size:19px; }.turn-actions .skill-button,.turn-actions .end-turn { font-size:11px; }.card h3 { font-size:16px; }.card p { font-size:12px; }.card button { font-size:10px; }
+}
+
 .room strong { margin-top:4px; font-size:11px; line-height:1.1; }.room small { color:#788582; }
 @media (min-width:901px) { .room strong { font-size:12px; }.room small { font-size:9px; margin-top:3px; } }
 
@@ -209,4 +222,36 @@ header { height:83px; display:flex; align-items:center; justify-content:space-be
   .guide-kicker { font-size:9px; }.guide-page h2 { font-size:22px; }.guide-note { font-size:10px; }.guide-section b,.guide-section button { font-size:10px; }.guide-page>small { font-size:9px; }
   .board-caption { font-size:13px; }.board-caption small { font-size:10px; }.room strong { font-size:13px; }.room small { font-size:10px; }.move-row { font-size:11px; }.move-row button { font-size:10px; }
   .hand-head h2 { font-size:18px; }.end-turn { font-size:11px; }.card h3 { font-size:15px; }.card p { font-size:11px; }.card button { font-size:9px; }
+}
+/* Keep the CSS-rotated phone view in three columns. These rules are placed
+   last so the generic mobile single-column layout cannot override them. */
+@media (max-width:900px) and (orientation:portrait) {
+  .app-shell.force-landscape .game-layout { display:grid !important; grid-template-columns:24% 52% 22% !important; grid-template-rows:minmax(0,1fr) !important; gap:1% !important; width:97vh !important; height:calc(100vw - 10px) !important; margin:0 auto !important; align-items:start !important; }
+  .app-shell.force-landscape .player-panel { display:block !important; grid-column:1 !important; grid-row:1 !important; width:100% !important; max-height:calc(100vw - 10px) !important; }
+  .app-shell.force-landscape .player-panel .guide-page { height:min(48vw,300px) !important; min-height:160px !important; }
+  .app-shell.force-landscape .field-guide { min-height:0 !important; }
+  .app-shell.force-landscape .board-wrap { grid-column:2 !important; grid-row:1 !important; order:initial !important; width:100% !important; }
+  .app-shell.force-landscape .side-panel { display:block !important; grid-column:3 !important; grid-row:1 !important; width:100% !important; }
+  .app-shell.force-landscape .hand-area { display:block !important; position:absolute !important; top:5px !important; right:1.5vh !important; width:21.3vh !important; margin:0 !important; }
+  .app-shell.force-landscape .cards { display:flex !important; flex-direction:column !important; overflow:visible !important; padding:0 !important; }
+  .app-shell.force-landscape .panel-label { font-size:9px !important; }
+  .app-shell.force-landscape .status-head button { font-size:8px !important; }
+  .app-shell.force-landscape .turn-status b { font-size:10px !important; }.app-shell.force-landscape .turn-status span,.app-shell.force-landscape .turn-status i { font-size:8px !important; }
+  .app-shell.force-landscape .duel-stats .player-name b { font-size:9px !important; }.app-shell.force-landscape .duel-stats .player-name small { font-size:7px !important; }.app-shell.force-landscape .duel-stats .meters span,.app-shell.force-landscape .duel-stats .meters b { font-size:8px !important; }
+  .app-shell.force-landscape .guide-page h2 { font-size:17px !important; }.app-shell.force-landscape .guide-note,.app-shell.force-landscape .guide-section button,.app-shell.force-landscape .guide-section b { font-size:8px !important; }
+  .app-shell.force-landscape .room strong { font-size:9px !important; }.app-shell.force-landscape .room small { font-size:7px !important; }.app-shell.force-landscape .room i { font-size:16px !important; }
+  .app-shell.force-landscape .hand-head h2 { font-size:12px !important; }.app-shell.force-landscape .turn-actions .skill-button,.app-shell.force-landscape .turn-actions .end-turn { font-size:8px !important; }
+  .app-shell.force-landscape .card h3 { font-size:10px !important; }.app-shell.force-landscape .card p,.app-shell.force-landscape .card button { font-size:8px !important; }
+  .app-shell.force-landscape .cards { gap:5px !important; }
+  .app-shell.force-landscape .card,.app-shell.force-landscape .card:hover,.app-shell.force-landscape .card:focus-within { height:116px !important; min-height:116px !important; transform:none !important; padding:7px !important; }
+  .app-shell.force-landscape .card p,.app-shell.force-landscape .card-actions,.app-shell.force-landscape .card .discard,.app-shell.force-landscape .card::after { opacity:1 !important; pointer-events:auto !important; }
+  .app-shell.force-landscape .card-top span { width:20px !important; height:20px !important; font-size:13px !important; }.app-shell.force-landscape .card-top b { width:20px !important; height:20px !important; font-size:11px !important; }
+  .app-shell.force-landscape .card h3 { margin:4px 0 2px !important; }.app-shell.force-landscape .card p { margin-top:3px !important; line-height:1.25 !important; }
+  .app-shell.force-landscape .card-actions { left:6px !important; right:6px !important; bottom:6px !important; gap:2px !important; }.app-shell.force-landscape .card button { padding:2px !important; }
+  .app-shell.force-landscape .card,.app-shell.force-landscape .card:hover,.app-shell.force-landscape .card:focus-within { height:82px !important; min-height:82px !important; padding:6px 76px 6px 7px !important; }
+  .app-shell.force-landscape .card-top { width:100% !important; padding-bottom:2px !important; }.app-shell.force-landscape .card-top span { width:18px !important; height:18px !important; font-size:11px !important; }.app-shell.force-landscape .card-top b { width:18px !important; height:18px !important; font-size:10px !important; }
+  .app-shell.force-landscape .card h3 { margin:3px 0 1px !important; font-size:9px !important; }.app-shell.force-landscape .card p { max-width:none !important; margin:1px 0 0 !important; font-size:7px !important; line-height:1.2 !important; }
+  .app-shell.force-landscape .card-actions { position:absolute !important; left:auto !important; right:6px !important; top:7px !important; bottom:7px !important; width:64px !important; display:grid !important; grid-template-rows:1fr 1fr !important; gap:4px !important; }
+  .app-shell.force-landscape .card-actions button { width:100% !important; min-height:0 !important; padding:2px !important; font-size:7px !important; }
+  .app-shell.force-landscape .card .discard { left:auto !important; right:6px !important; top:7px !important; bottom:7px !important; width:64px !important; }
 }
