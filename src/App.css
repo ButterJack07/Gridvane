@@ -309,3 +309,8 @@ header { height:83px; display:flex; align-items:center; justify-content:space-be
   .app-shell.force-landscape .card.compact-selected { border-color:#d17249 !important; background:linear-gradient(132deg,#fff9e9,#f5e5ce) !important; box-shadow:4px 5px 0 rgba(139,72,39,.15) !important; }
   .app-shell.force-landscape .card .discard { display:block !important; left:auto !important; right:5px !important; top:5px !important; bottom:5px !important; width:38px !important; }
 }
+/* Character selection uses one consistent horizontal row. */
+.lobby .role-picks { grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:9px !important; }
+.lobby .role-picks button { min-width:0 !important; min-height:126px !important; padding:10px !important; }
+@media (max-width:900px) and (orientation:landscape) { .lobby .role-picks { grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:5px !important; }.lobby .role-picks button { min-height:74px !important; padding:6px !important; } }
+@media (max-width:900px) and (orientation:portrait) { .app-shell.force-landscape .lobby .role-picks { grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:5px !important; }.app-shell.force-landscape .lobby .role-picks button { min-height:74px !important; padding:6px !important; } }
