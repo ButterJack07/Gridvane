@@ -87,11 +87,13 @@ function App() {
   const [showLobby, setShowLobby] = useState(true)
   const [lobbyStep, setLobbyStep] = useState<1 | 2 | 3 | 4>(1)
   const [lobbyMode, setLobbyMode] = useState<Mode>('solo')
+  const [forceLandscape, setForceLandscape] = useState(false)
   const current = game.players[game.current]; const me = game.players[0]
   const turnStatus = game.phase === 'draw' ? `${current.id === 'p1' ? '您的' : '对手的'}准备回合` : game.phase === 'discard' ? `${current.id === 'p1' ? '您的' : '对手的'}弃置回合` : game.phase === 'teleport' ? `${current.id === 'p1' ? '您的' : '对手的'}传送选择` : `${current.id === 'p1' ? '您的' : '对手的'}行动回合`
   const seenRoom = (r: Room) => me.seen.includes(key(r))
   const update = (fn: (g: Game) => Game) => setGame((g) => fn(structuredClone(g)))
   const start = (nextMode = mode) => { setMode(nextMode); setGame(newGame(nextMode, selectedRole)); setLobbyStep(1); setShowLobby(false) }
+  const enterLandscape = async () => { try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen?.(); const orientation = screen.orientation as ScreenOrientation & { lock?: (orientation: string) => Promise<void> }; await orientation.lock?.('landscape') } catch { /* Unsupported browsers use the CSS rotation fallback. */ } window.setTimeout(() => { if (window.matchMedia('(orientation: portrait)').matches) setForceLandscape(true) }, 250) }
   const log = (g: Game, message: string) => { g.log = [message, ...g.log].slice(0, 5) }
   const revealNearby = (g: Game, player: Player, pos = player.pos) => { (Object.keys(dirs) as Direction[]).forEach((d) => { const r = at(g.rooms, move(pos, d)); if (r && !player.seen.includes(key(r))) player.seen.push(key(r)) }) }
   const damage = (g: Game, player: Player, amount: number, reason: string) => { const blocked = player.shields > 0; if (blocked) player.shields--; else player.hp -= amount; log(g, blocked ? `${player.name} 的护盾抵消了${reason}` : `${player.name} ${reason}，受到 ${amount} 点伤害`); if (player.hp <= 0) g.winner = player.id === 'p1' ? '访客 AI' : '研究员' }
@@ -158,7 +160,7 @@ function App() {
   useEffect(() => { if (game.mode !== 'versus' || game.current !== 1 || game.winner || game.phase !== 'teleport') return; const timer = window.setTimeout(() => update((g) => { const ai = g.players[1]; const target = rand(g.rooms.filter((room) => ai.seen.includes(key(room)))); if (target) { g.phase = 'play'; enter(g, ai, target); log(g, 'AI 完成传送'); finishAction(g) }; return g }), 950); return () => window.clearTimeout(timer) }, [game])
   useEffect(() => { if (game.mode !== 'versus' || game.current !== 1 || game.winner) return; if (game.phase === 'discard') { const timer = window.setTimeout(() => update((g) => { const ai = g.players[1]; while (ai.hand.length > 3) ai.hand.shift(); g.phase = 'play'; log(g, 'AI 已整理手牌'); return g }), 800); return () => window.clearTimeout(timer) } if (game.phase === 'play' && game.acted && !game.pendingCard) { const timer = window.setTimeout(() => endTurn(), 1100); return () => window.clearTimeout(timer) } }, [game])
 
-  return <main className="app-shell"><div className="rotate-device"><div><i>↻</i><b>请横向旋转设备</b><span>横屏后进入研究所行动界面</span></div></div>
+  return <main className={`app-shell ${forceLandscape ? 'force-landscape' : ''}`}><div className="rotate-device"><div><i>↻</i><b>请横向旋转设备</b><span>可先关闭手机方向锁定，或点击下方按钮尝试全屏横屏。</span><button onClick={enterLandscape}>进入横屏游戏</button></div></div>
     <section className="game-layout">
       <aside className="player-panel"><div className="status-head"><span className="panel-label">对局状态</span><button onClick={() => { setLobbyStep(1); setShowLobby(true) }}>回到大厅</button></div><div className={`turn-status ${game.phase === 'draw' ? 'drawing' : ''}`}><span>第 {game.turn} 回合</span><b>{turnStatus}</b>{game.phase === 'draw' && <i>抽取中</i>}</div><div className="duel-stats"><PlayerCard player={me} active={game.current === 0} />{mode === 'versus' && <PlayerCard player={game.players[1]} active={game.current === 1} />}</div><div className="objective"><b>胜利条件</b><span>{mode === 'solo' ? '以最少回合取得 10 积分' : '10 积分 / 击败 AI'}</span></div><div className="field-guide"><div className="guide-spine">EXPLORATION GUIDE</div><div className={`guide-page ${guidePage === 'index' ? '' : 'detail-page'}`}>{guidePage === 'index' ? <GuideIndex index={guideIndex} onChange={setGuideIndex} onOpen={setGuidePage} /> : <GuideDetail kind={guidePage} onBack={() => setGuidePage('index')} />}</div></div></aside>
       <div className="board-wrap" data-airdrop={`空投倒计时：${game.airdropRoomId ? '已投放' : Math.max(0, game.airdropTurn - game.turn)} 回合`}>
