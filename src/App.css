@@ -228,7 +228,7 @@ header { height:83px; display:flex; align-items:center; justify-content:space-be
 @media (max-width:900px) and (orientation:portrait) {
   .app-shell.force-landscape .game-layout { display:grid !important; grid-template-columns:24% 52% 22% !important; grid-template-rows:minmax(0,1fr) !important; gap:1% !important; width:97vh !important; height:calc(100vw - 10px) !important; margin:0 auto !important; align-items:start !important; }
   .app-shell.force-landscape .player-panel { display:block !important; grid-column:1 !important; grid-row:1 !important; width:100% !important; max-height:calc(100vw - 10px) !important; }
-  .app-shell.force-landscape .player-panel .guide-page { height:min(48vw,300px) !important; min-height:160px !important; }
+  .app-shell.force-landscape .player-panel .guide-page { height:min(58vw,360px) !important; min-height:200px !important; }
   .app-shell.force-landscape .field-guide { min-height:0 !important; }
   .app-shell.force-landscape .board-wrap { grid-column:2 !important; grid-row:1 !important; order:initial !important; width:100% !important; }
   .app-shell.force-landscape .side-panel { display:block !important; grid-column:3 !important; grid-row:1 !important; width:100% !important; }
@@ -264,4 +264,5 @@ header { height:83px; display:flex; align-items:center; justify-content:space-be
   .app-shell.force-landscape .status-head button { padding:3px 5px !important; }.app-shell.force-landscape .turn-status { margin-top:4px !important; padding:4px 5px !important; gap:4px !important; }
   .app-shell.force-landscape .duel-stats { margin-top:4px !important; gap:4px !important; }.app-shell.force-landscape .duel-stats .stat-card { padding:5px !important; }.app-shell.force-landscape .duel-stats .player-name { gap:3px !important; }.app-shell.force-landscape .duel-stats .avatar { width:16px !important; height:16px !important; }.app-shell.force-landscape .duel-stats .meters { margin-top:4px !important; gap:2px !important; }.app-shell.force-landscape .duel-stats .buffs { margin-top:3px !important; padding-top:3px !important; min-height:12px !important; }
   .app-shell.force-landscape .objective { margin-top:4px !important; padding:5px !important; }.app-shell.force-landscape .objective b { margin-bottom:2px !important; }
+  .app-shell.force-landscape .objective { display:none !important; }
 }
