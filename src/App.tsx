@@ -87,7 +87,7 @@ function App() {
   const [showLobby, setShowLobby] = useState(true)
   const [lobbyStep, setLobbyStep] = useState<1 | 2 | 3 | 4>(1)
   const [lobbyMode, setLobbyMode] = useState<Mode>('solo')
-  const [forceLandscape, setForceLandscape] = useState(false)
+  const [forceLandscape, setForceLandscape] = useState(() => window.matchMedia('(max-width: 900px) and (orientation: portrait)').matches)
   const [selectedCardId, setSelectedCardId] = useState<string>()
   const current = game.players[game.current]; const me = game.players[0]
   const turnStatus = game.phase === 'draw' ? `${current.id === 'p1' ? '您的' : '对手的'}准备回合` : game.phase === 'discard' ? `${current.id === 'p1' ? '您的' : '对手的'}弃置回合` : game.phase === 'teleport' ? `${current.id === 'p1' ? '您的' : '对手的'}传送选择` : `${current.id === 'p1' ? '您的' : '对手的'}行动回合`
@@ -95,6 +95,7 @@ function App() {
   const update = (fn: (g: Game) => Game) => setGame((g) => fn(structuredClone(g)))
   const start = (nextMode = mode) => { setMode(nextMode); setGame(newGame(nextMode, selectedRole)); setLobbyStep(1); setShowLobby(false) }
   const enterLandscape = async () => { try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen?.(); const orientation = screen.orientation as ScreenOrientation & { lock?: (orientation: string) => Promise<void> }; await orientation.lock?.('landscape') } catch { /* Unsupported browsers use the CSS rotation fallback. */ } window.setTimeout(() => { if (window.matchMedia('(orientation: portrait)').matches) setForceLandscape(true) }, 250) }
+  useEffect(() => { const portraitPhone = window.matchMedia('(max-width: 900px) and (orientation: portrait)'); const syncOrientation = (event: MediaQueryListEvent | MediaQueryList) => setForceLandscape(event.matches); syncOrientation(portraitPhone); portraitPhone.addEventListener('change', syncOrientation); return () => portraitPhone.removeEventListener('change', syncOrientation) }, [])
   const log = (g: Game, message: string) => { g.log = [message, ...g.log].slice(0, 5) }
   const revealNearby = (g: Game, player: Player, pos = player.pos) => { (Object.keys(dirs) as Direction[]).forEach((d) => { const r = at(g.rooms, move(pos, d)); if (r && !player.seen.includes(key(r))) player.seen.push(key(r)) }) }
   const damage = (g: Game, player: Player, amount: number, reason: string) => { const blocked = player.shields > 0; if (blocked) player.shields--; else player.hp -= amount; log(g, blocked ? `${player.name} 的护盾抵消了${reason}` : `${player.name} ${reason}，受到 ${amount} 点伤害`); if (player.hp <= 0) g.winner = player.id === 'p1' ? '访客 AI' : '研究员' }

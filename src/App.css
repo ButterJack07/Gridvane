@@ -296,7 +296,7 @@ header { height:83px; display:flex; align-items:center; justify-content:space-be
   .app-shell.force-landscape .board-lobby-button { position:absolute !important; left:0 !important; top:0 !important; z-index:8 !important; display:block !important; height:23px !important; padding:3px 6px !important; border:1px solid #b2c1b7 !important; background:#f7f3e7 !important; color:#28635e !important; font-size:8px !important; font-weight:700 !important; }
 }
 /* Release label: bump this value before every GitHub deployment. */
-.lobby h1 em::after { content:"v1.0.1"; display:inline-block; margin-left:9px; color:#718179; font:500 10px "DM Mono"; letter-spacing:.05em; vertical-align:middle; }
+.lobby h1 em::after { content:"v1.0.2"; display:inline-block; margin-left:9px; color:#718179; font:500 10px "DM Mono"; letter-spacing:.05em; vertical-align:middle; }
 @media (max-width:900px) and (orientation:portrait) { .app-shell.force-landscape .card p { font-size:7px !important; } }
 @media (max-width:900px) and (orientation:portrait) {
   .app-shell.force-landscape .cards { gap:3px !important; }
