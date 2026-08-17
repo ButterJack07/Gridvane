@@ -296,7 +296,7 @@ header { height:83px; display:flex; align-items:center; justify-content:space-be
   .app-shell.force-landscape .board-lobby-button { position:absolute !important; left:0 !important; top:0 !important; z-index:8 !important; display:block !important; height:23px !important; padding:3px 6px !important; border:1px solid #b2c1b7 !important; background:#f7f3e7 !important; color:#28635e !important; font-size:8px !important; font-weight:700 !important; }
 }
 /* Release label: bump this value before every GitHub deployment. */
-.lobby h1 em::after { content:"v1.0.0"; display:inline-block; margin-left:9px; color:#718179; font:500 10px "DM Mono"; letter-spacing:.05em; vertical-align:middle; }
+.lobby h1 em::after { content:"v1.0.1"; display:inline-block; margin-left:9px; color:#718179; font:500 10px "DM Mono"; letter-spacing:.05em; vertical-align:middle; }
 @media (max-width:900px) and (orientation:portrait) { .app-shell.force-landscape .card p { font-size:7px !important; } }
 @media (max-width:900px) and (orientation:portrait) {
   .app-shell.force-landscape .cards { gap:3px !important; }
@@ -308,6 +308,12 @@ header { height:83px; display:flex; align-items:center; justify-content:space-be
   .app-shell.force-landscape .compact-left button,.app-shell.force-landscape .compact-right button { width:100% !important; height:100% !important; padding:0 !important; border:0 !important; border-radius:3px !important; color:#fff !important; font-size:8px !important; font-weight:700 !important; }.app-shell.force-landscape .compact-left button { background:#2e7b72 !important; }.app-shell.force-landscape .compact-right button { background:#ce6843 !important; }.app-shell.force-landscape .compact-left button:disabled,.app-shell.force-landscape .compact-right button:disabled { opacity:.4 !important; }
   .app-shell.force-landscape .card.compact-selected { border-color:#d17249 !important; background:linear-gradient(132deg,#fff9e9,#f5e5ce) !important; box-shadow:4px 5px 0 rgba(139,72,39,.15) !important; }
   .app-shell.force-landscape .card .discard { display:block !important; left:auto !important; right:5px !important; top:5px !important; bottom:5px !important; width:38px !important; }
+  .app-shell.force-landscape .compact-card { grid-template-columns:minmax(0,1fr) 38px !important; }
+  .app-shell.force-landscape .compact-info { grid-column:1 !important; border-left:0 !important; }.app-shell.force-landscape .compact-direction { grid-column:2 !important; height:100% !important; display:grid !important; place-items:center !important; color:#c55c38 !important; font:700 18px "DM Mono" !important; border-left:1px solid rgba(71,112,100,.18) !important; }
+  .app-shell.force-landscape .compact-selected .compact-card { grid-template-columns:minmax(0,1fr) 43px 43px !important; gap:3px !important; }
+  .app-shell.force-landscape .compact-no-direction .compact-card,.app-shell.force-landscape .compact-no-direction.compact-selected .compact-card { grid-template-columns:minmax(0,1fr) 43px !important; }
+  .app-shell.force-landscape .compact-selected-name { min-width:0 !important; display:flex !important; align-items:center !important; padding:0 5px !important; color:#244d49 !important; font-size:9px !important; font-weight:800 !important; line-height:1.2 !important; white-space:normal !important; }
+  .app-shell.force-landscape .compact-use,.app-shell.force-landscape .compact-move { height:100% !important; padding:0 !important; border:0 !important; border-radius:3px !important; color:#fff !important; font-size:7px !important; font-weight:700 !important; line-height:1.15 !important; }.app-shell.force-landscape .compact-use { background:#2e7b72 !important; }.app-shell.force-landscape .compact-move { background:#ce6843 !important; }.app-shell.force-landscape .compact-use:disabled,.app-shell.force-landscape .compact-move:disabled { opacity:.38 !important; }
 }
 /* Character selection uses one consistent horizontal row. */
 .lobby .role-picks { grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:9px !important; }
