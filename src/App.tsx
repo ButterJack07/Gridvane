@@ -35,42 +35,58 @@ const reachableDist = (g: Game, from: Pos) => { const dist = new Map<string, num
 const randomCard = (mode: Mode, game?: Game, player?: Player): Card => { const roll = Math.random() * 100; const kind: CardKind = roll < 2 ? 'combatSerum' : roll < 5 ? 'vitalCore' : roll < 8 ? 'thorns' : roll < 13 ? 'firstAid' : roll < 18 && mode === 'versus' ? 'jammer' : roll < 23 && mode === 'versus' ? 'prediction' : roll < 33 ? 'dash' : rand(mode === 'solo' ? ['heal', 'scan'] as CardKind[] : ['heal', 'scan', 'locate'] as CardKind[]); if (kind === 'dash') return { id: crypto.randomUUID(), kind }; const legalDirections = game && player ? legalDirectionsFor(game, player) : Object.keys(dirs) as Direction[]; let direction = rand(legalDirections.length ? legalDirections : Object.keys(dirs) as Direction[]); if (player && game && legalDirections.length) { const bagKey = `${key(player.pos)}:${[...legalDirections].sort().join(',')}`; if (player.directionBagPos !== bagKey) { player.directionBagPos = bagKey; player.directionBag = [] } player.directionBag = player.directionBag.filter((item) => legalDirections.includes(item)); if (!player.directionBag.length) player.directionBag = [...legalDirections].sort(() => Math.random() - .5); direction = player.directionBag.shift()! } return { id: crypto.randomUUID(), kind, direction } }
 
 function createMap(): { rooms: Room[]; spawns: Pos[] } {
-  const target = 22 + Math.floor(Math.random() * 5)
-  const cells: Pos[] = [{ r: 2, c: 2 }]
-  while (cells.length < target) {
-    const candidates = cells.flatMap((source) => (Object.keys(dirs) as Direction[]).map((d) => move(source, d)))
-      .filter((next, index, all) => next.r >= 0 && next.r < 6 && next.c >= 0 && next.c < 6 && !cells.some((p) => eq(p, next)) && all.findIndex((p) => eq(p, next)) === index)
-    const ranked = candidates.map((next) => {
-      const all = [...cells, next]; const rows = all.map((p) => p.r); const cols = all.map((p) => p.c)
-      const height = Math.max(...rows) - Math.min(...rows) + 1; const width = Math.max(...cols) - Math.min(...cols) + 1
-      const edgeNeighbors = (Object.keys(dirs) as Direction[]).filter((d) => cells.some((p) => eq(p, move(next, d)))).length
-      return { next, score: width * height * 12 + Math.min(width, height) * 8 - edgeNeighbors * 2 + Math.random() * 7 }
-    }).sort((a, b) => b.score - a.score)
-    cells.push(rand(ranked.slice(0, Math.max(1, Math.ceil(ranked.length * .32)))).next)
-  }
-  const kinds: RoomKind[] = ['office', 'lounge', 'samples', 'analysis', 'energy', 'security', 'archive', 'anomaly', 'medical', 'meeting', 'workshop', 'teleport']
-  while (kinds.length < target) kinds.push(rand(kinds.slice(2)))
-  const rooms: Room[] = cells.map((p, i) => ({ id: crypto.randomUUID(), ...p, kind: kinds[i], doors: [] as Direction[] }))
-  rooms.forEach((room) => {
-    ;(Object.keys(dirs) as Direction[]).forEach((d) => {
-      const next = at(rooms, move(room, d)); if (!next || room.doors.includes(d)) return
-      if (Math.random() < .5) { room.doors.push(d); next.doors.push(opposite[d]) }
+  const isBlank = (r: Room) => r.kind === 'office' || r.kind === 'lounge'
+  const build = (): Room[] => {
+    const target = 22 + Math.floor(Math.random() * 5)
+    const cells: Pos[] = [{ r: 2, c: 2 }]
+    while (cells.length < target) {
+      const candidates = cells.flatMap((source) => (Object.keys(dirs) as Direction[]).map((d) => move(source, d)))
+        .filter((next, index, all) => next.r >= 0 && next.r < 6 && next.c >= 0 && next.c < 6 && !cells.some((p) => eq(p, next)) && all.findIndex((p) => eq(p, next)) === index)
+      const ranked = candidates.map((next) => {
+        const all = [...cells, next]; const rows = all.map((p) => p.r); const cols = all.map((p) => p.c)
+        const height = Math.max(...rows) - Math.min(...rows) + 1; const width = Math.max(...cols) - Math.min(...cols) + 1
+        const edgeNeighbors = (Object.keys(dirs) as Direction[]).filter((d) => cells.some((p) => eq(p, move(next, d)))).length
+        return { next, score: width * height * 12 + Math.min(width, height) * 8 - edgeNeighbors * 2 + Math.random() * 7 }
+      }).sort((a, b) => b.score - a.score)
+      cells.push(rand(ranked.slice(0, Math.max(1, Math.ceil(ranked.length * .32)))).next)
+    }
+    const kinds: RoomKind[] = ['office', 'lounge', 'samples', 'analysis', 'energy', 'security', 'archive', 'anomaly', 'medical', 'meeting', 'workshop', 'teleport']
+    while (kinds.length < target) kinds.push(rand(kinds.slice(2)))
+    const rooms: Room[] = cells.map((p, i) => ({ id: crypto.randomUUID(), ...p, kind: kinds[i], doors: [] as Direction[] }))
+    rooms.forEach((room) => {
+      ;(Object.keys(dirs) as Direction[]).forEach((d) => {
+        const next = at(rooms, move(room, d)); if (!next || room.doors.includes(d)) return
+        if (Math.random() < .5) { room.doors.push(d); next.doors.push(opposite[d]) }
+      })
     })
-  })
-  const reachable = () => {
-    const visited = new Set<string>([key(rooms[0])]); const queue = [rooms[0]]
-    while (queue.length) { const room = queue.shift()!; room.doors.forEach((d) => { const next = at(rooms, move(room, d)); if (next && !visited.has(key(next))) { visited.add(key(next)); queue.push(next) } }) }
-    return visited
+    const reachable = () => {
+      const visited = new Set<string>([key(rooms[0])]); const queue = [rooms[0]]
+      while (queue.length) { const room = queue.shift()!; room.doors.forEach((d) => { const next = at(rooms, move(room, d)); if (next && !visited.has(key(next))) { visited.add(key(next)); queue.push(next) } }) }
+      return visited
+    }
+    let connected = reachable()
+    while (connected.size < rooms.length) {
+      const bridge = rooms.flatMap((room) => (Object.keys(dirs) as Direction[]).map((d) => ({ room, d, next: at(rooms, move(room, d)) })))
+        .find(({ room, next }) => next && connected.has(key(room)) && !connected.has(key(next)))
+      if (!bridge?.next) break
+      bridge.room.doors.push(bridge.d); bridge.next.doors.push(opposite[bridge.d])
+      connected = reachable()
+    }
+    return rooms
   }
-  let connected = reachable()
-  while (connected.size < rooms.length) {
-    const bridge = rooms.flatMap((room) => (Object.keys(dirs) as Direction[]).map((d) => ({ room, d, next: at(rooms, move(room, d)) })))
-      .find(({ room, next }) => next && connected.has(key(room)) && !connected.has(key(next)))
-    if (!bridge?.next) break
-    bridge.room.doors.push(bridge.d); bridge.next.doors.push(opposite[bridge.d])
-    connected = reachable()
+  let rooms = build()
+  let blanks = rooms.filter(isBlank)
+  let regens = 0
+  while (blanks.length === 0 && regens < 3) { rooms = build(); blanks = rooms.filter(isBlank); regens++ }
+  if (blanks.length === 0) {
+    const distFromRooms0 = (p: Room) => Math.abs(p.r - rooms[0].r) + Math.abs(p.c - rooms[0].c)
+    const far = [...rooms].sort((a, b) => distFromRooms0(b) - distFromRooms0(a))[0]
+    const replaced = far.kind
+    far.kind = 'office'
+    blanks = rooms.filter(isBlank)
+    const spareBlank = blanks.find((b) => b.id !== far.id)
+    if (spareBlank) spareBlank.kind = replaced
   }
-  const blanks = rooms.filter((r) => r.kind === 'office' || r.kind === 'lounge')
   const first = blanks[0] || rooms[0]
   const distFrom = (p: { r: number; c: number }) => Math.abs(p.r - first.r) + Math.abs(p.c - first.c)
   const farBlank = blanks.slice(1).find((b) => distFrom(b) >= 3)
