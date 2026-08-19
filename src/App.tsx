@@ -71,8 +71,11 @@ function createMap(): { rooms: Room[]; spawns: Pos[] } {
     connected = reachable()
   }
   const blanks = rooms.filter((r) => r.kind === 'office' || r.kind === 'lounge')
-  const far = blanks.filter((b) => Math.abs(b.r - blanks[0].r) + Math.abs(b.c - blanks[0].c) >= 3)
-  return { rooms, spawns: [blanks[0], far[0] || blanks[1] || rooms[1]].map(({ r, c }) => ({ r, c })) }
+  const first = blanks[0] || rooms[0]
+  const distFrom = (p: { r: number; c: number }) => Math.abs(p.r - first.r) + Math.abs(p.c - first.c)
+  const farBlank = blanks.slice(1).find((b) => distFrom(b) >= 3)
+  const second = farBlank || [...rooms].filter((r) => r.id !== first.id && distFrom(r) >= 3)[0] || [...rooms].filter((r) => r.id !== first.id).sort((a, b) => distFrom(b) - distFrom(a))[0] || rooms[1]
+  return { rooms, spawns: [{ r: first.r, c: first.c }, { r: second.r, c: second.c }] }
 }
 
 function newGame(mode: Mode, role: Role): Game {
